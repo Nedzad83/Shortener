@@ -1,0 +1,60 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    networks:
+      my-network:
+         aliases:
+            - redis
+    container_name: redis
+    hostname: redis
+    command: [ "redis-server", "--protected-mode", "no" ]
+    ports:
+      - "6379:6379"
+
+  mysql-server:
+    image: mysql:8.0
+    networks:
+      my-network:
+        aliases:
+          - mysql-server
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=shortener
+    ports:
+      - "3306:3306"
+  rabbitmq-container:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      my-network:
+        aliases:
+          - rabbitmq-container
+
+  shortener:
+    image: shortener
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql-server
+      - redis
+      - rabbitmq-container
+    networks:
+      my-network:
+        aliases:
+          - shortener
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-server:3306/shortener?createDatabaseIfNotExists=true&autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&maxReconnects=10&initialTimeout=4
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_RABBITMQ_HOST=rabbitmq-container
+      - SPRING_REDIS.HOST=redis
+    links:
+      - redis
+networks:
+  my-network:
