@@ -21,7 +21,7 @@ After creating or deleting short URL, the information must be sent to RabbitMQ/K
 * [Redis](https://redis.io/) used as a distributed in-memory data store. Application is mostly served by the cache server for high performance.
 * [Maven](https://maven.apache.org/) for building the projects
 * [Junit](https://junit.org/) for writing unit, integration tests for the application. 
-* [MySQL] is used as persistence layer.
+* [MySQL](https://www.mysql.com/) is used as persistence layer.
 * [Docker](https://www.docker.com/) for building and managing the application as images. The build and deploy phases are completed part of Docker.
 
 # How to use 
@@ -38,7 +38,6 @@ $ cd Shortener
 ```sh
 $ Navigate to downloaded directory
 $ mvn clean install -DskipTests
-$ docker-compose build
 ```
 #### Deploy & Run
 ```sh
