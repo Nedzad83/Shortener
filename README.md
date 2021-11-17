@@ -70,6 +70,7 @@ RabbitMQ is used for transferring messages between services. MySQL is used as pe
 After creating or deleting short URL, the information must be sent to RabbitMQ/Kafka.The Redis cache server is introduced as a middle layer to improve the performance of the application.
 
 ## Technology Stack:
+* JAVA
 * [Spring Boot](http://spring.io/projects/spring-boot) for creating the REST Web Services.
 * [Redis](https://redis.io/) used as a distributed in-memory data store. Application is mostly served by the cache server for high performance.
 * [Maven](https://maven.apache.org/) for building the projects
