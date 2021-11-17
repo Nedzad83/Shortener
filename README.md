@@ -4,9 +4,58 @@ This is an API for Url shortener service like tiny url.
 
 Url shortener is service that converts long urls into short aliases to save space when sharing urls in messages, presentations etc.
 
+Url shortener is an application for URL shortening. An example of such application is
+TinyURL (http://tinyurl.com/). The application contains 2 services. The first service is a
+Management Service, another service is Redirection Service. RabbitMQ/Kafka will be used
+for transferring messages between services.
+
 # Architecture Diagram
 ![image](https://user-images.githubusercontent.com/4907367/142269024-c4fca3d2-0b87-4276-99de-9f45dfaa0d19.png)
 
+# Management Service
+Management Service has RESTful API for creating and deleting URLs. There are two
+routes:
+
+###### Creation route
+● Route should create short URL based on real URL.
+● Short URL must be unique.
+● Short URL hash identification must be located in URI path. eg.
+http://localhost:8080/uAYC3sOddP
+● Hashing algorithm is not important, so it can be any licence free algorithm.
+Request example:
+{
+"realURL": "https://www.nsoft.com/job-application/?job_id=7661"
+}
+Response example:
+{
+"id": 3,
+"realURL": "https://www.nsoft.com/job-application/?job_id=7661",
+"shortURL": "http://localhost:8080/gfjhgESta"
+}
+
+###### Deletion route
+● Remove short URL using id.
+Management service should use MySQL/PostgreSQL for persistence layer.
+After creating or deleting short URL, the information must be sent to RabbitMQ/Kafka.
+
+# Redirection Service
+The service will find real URL, based on hash part of the short URL and the user will be
+redirected to real URL. Redirection accepts information about short URLs through RabbitMQ/
+Kafka. In the case of creating short URL on Management Service, the information will be stored
+in Redis on Redirection Service, while in the case of deleting short URL, the information will be
+deleted from Redis on Redirection Service.
+
+Redirection service has one RESTful API route.
+Redirect route
+● Route should return 302 http code for existing short URL.
+● Route should return 404 http code for non existing short URL.
+
+# Additional implementation
+
+Implemented rate limiting on Redirection Service where service allows 10 redirect requests in
+period of 120 seconds for specific URL.
+Redirect route
+● Route should return 429 http code after reaching threshold.
 
 ## Solution Overview
 
