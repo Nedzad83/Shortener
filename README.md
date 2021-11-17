@@ -4,6 +4,10 @@ This is an API for Url shortener service like tiny url.
 
 Url shortener is service that converts long urls into short aliases to save space when sharing urls in messages, presentations etc.
 
+# Architecture Diagram
+![image](https://user-images.githubusercontent.com/4907367/142269024-c4fca3d2-0b87-4276-99de-9f45dfaa0d19.png)
+
+
 ## Solution Overview
 
 Component View of the Backend Short Url Service:
