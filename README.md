@@ -17,11 +17,11 @@ Management Service has RESTful API for creating and deleting URLs. There are two
 routes:
 
 ###### Creation route
-● Route should create short URL based on real URL.
-● Short URL must be unique.
-● Short URL hash identification must be located in URI path. eg.
+* Route should create short URL based on real URL.
+* Short URL must be unique.
+* Short URL hash identification must be located in URI path. eg.
 http://localhost:8080/uAYC3sOddP
-● Hashing algorithm is not important, so it can be any licence free algorithm.
+* Hashing algorithm is not important, so it can be any licence free algorithm.
 Request example:
 {
 "realURL": "https://www.nsoft.com/job-application/?job_id=7661"
@@ -34,7 +34,7 @@ Response example:
 }
 
 ###### Deletion route
-● Remove short URL using id.
+* Remove short URL using id.
 Management service should use MySQL/PostgreSQL for persistence layer.
 After creating or deleting short URL, the information must be sent to RabbitMQ/Kafka.
 
@@ -47,15 +47,15 @@ deleted from Redis on Redirection Service.
 
 Redirection service has one RESTful API route.
 Redirect route
-● Route should return 302 http code for existing short URL.
-● Route should return 404 http code for non existing short URL.
+* Route should return 302 http code for existing short URL.
+* Route should return 404 http code for non existing short URL.
 
 # Additional implementation
 
 Implemented rate limiting on Redirection Service where service allows 10 redirect requests in
 period of 120 seconds for specific URL.
 Redirect route
-● Route should return 429 http code after reaching threshold.
+* Route should return 429 http code after reaching threshold.
 
 ## Solution Overview
 
